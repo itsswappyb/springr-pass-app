@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  important: true,
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -21,8 +22,9 @@ module.exports = {
         orangePrimary: "#FF862D",
         orangeLight: "#FFC092",
         beige: "#F9F4F2",
+        bluePrimary: "#0F5FD8",
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 };
