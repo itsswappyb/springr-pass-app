@@ -3,22 +3,28 @@ import {
   NFT,
   useAddress,
   useNFT,
-  useClaimNFT,
+  useNFTBalance,
   useContract,
   useWallet,
   Web3Button,
 } from "@thirdweb-dev/react";
-import styles from "../styles/Home.module.css";
+import styles from "@/styles/Home.module.css";
 import Image from "next/image";
 import { NextPage } from "next";
 import { Bricolage_Grotesque } from "next/font/google";
-import accessPassImgLg from "../public/images/access-pass-lg.png";
-import accessPassImg from "../public/images/access-pass.png";
-import { ACCESS_PASS_ADDRESS_GOERLI } from "../lib/constants";
+import accessPassImgLg from "@/public/images/access-pass-lg.png";
+import accessPassImg from "@/public/images/access-pass.png";
+import {
+  ACCESS_PASS_ADDRESS_GOERLI,
+  IMPLEMENTATION_ADDRESS_GOERLI,
+} from "@/lib/constants";
 import { BigNumber, Signer } from "ethers";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import { newSmartWallet } from "../lib/utils/smartwallet";
+import { newSmartWallet } from "@/lib/utils/smartwallet";
+import { TokenboundClient } from "@tokenbound/sdk";
+import { DEFAULT_ACCOUNT } from "@/lib/constants";
+import { ACTIVE_CHAIN } from "../lib/constants";
 
 const bricolage = Bricolage_Grotesque({ subsets: ["latin"] });
 
@@ -34,6 +40,13 @@ const Home: NextPage = () => {
 
   const { contract } = useContract(ACCESS_PASS_ADDRESS_GOERLI);
   const { data: nft, isLoading, error } = useNFT(contract, 0);
+
+  const {
+    data: nftBalance,
+    isLoading: loadingNftBalance,
+    error: nftBalanceError,
+  } = useNFTBalance(contract, address, 0);
+  console.log("nft balance:", nftBalance?.toNumber());
 
   const createSmartWallet = async (nft: NFT) => {
     if (nft && smartWalletAddress == null && address && wallet) {
@@ -51,6 +64,19 @@ const Home: NextPage = () => {
       console.log("smart wallet not created");
     }
   };
+
+  const tokenboundClient = new TokenboundClient({
+    signer,
+    chainId: ACTIVE_CHAIN.chainId,
+    implementationAddress: IMPLEMENTATION_ADDRESS_GOERLI as `0x${string}`,
+  });
+
+  const tokenboundAccount = tokenboundClient.getAccount({
+    tokenContract: ACCESS_PASS_ADDRESS_GOERLI,
+    tokenId: "0",
+  });
+
+  console.log("tokenboundAccount: ", tokenboundAccount);
 
   return (
     <main
@@ -111,6 +137,11 @@ const Home: NextPage = () => {
               smart wallet address: {smartWalletAddress}
             </h3>
           </>
+        )}
+        {tokenboundAccount && (
+          <p className="font-bold text-md text-white my-6">
+            Tokenbound Account: {tokenboundAccount}
+          </p>
         )}
       </div>
     </main>

@@ -19,6 +19,7 @@ export function newSmartWallet(token: NFT) {
     clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID, // obtained from the thirdweb dashboard
     gasless: true, // enable or disable gasless transactions
     factoryInfo: {
+      // the factory method to call to create a new account
       createAccount: async (
         factory: SmartContract<BaseContract>,
         owner: string
@@ -33,7 +34,8 @@ export function newSmartWallet(token: NFT) {
         ]);
         console.log("here", account);
         return account;
-      }, // the factory method to call to create a new account
+      },
+      // the factory method to call to get the account address
       getAccountAddress: async (
         factory: SmartContract<BaseContract>,
         owner: string
@@ -45,7 +47,7 @@ export function newSmartWallet(token: NFT) {
           token.metadata.id,
           0,
         ]);
-      }, // the factory method to call to get the account address
+      },
     },
   };
   return new SmartWallet(config);

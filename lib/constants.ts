@@ -1,4 +1,10 @@
 import { Goerli } from "@thirdweb-dev/chains";
+import { type TBAccountParams } from "@tokenbound/sdk/dist/src/TokenboundClient";
+
+export const DEFAULT_ACCOUNT: TBAccountParams = {
+  tokenContract: "0xe7134a029cd2fd55f678d6809e64d0b6a0caddcb",
+  tokenId: "9",
+};
 
 export const ACCESS_PASS_ADDRESS_SEPOLIA =
   "0xec5d6C45AdC0d1ca7A4b04338c76E942517Fdc10";
