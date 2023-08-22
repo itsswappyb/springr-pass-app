@@ -19,7 +19,8 @@
     "react": "^18.2",
     "react-dom": "^18.2",
     "react-hot-toast": "^2.4.1",
-    "sass": "^1.66.0"
+    "sass": "^1.66.0",
+    "viem": "^1.6.7"
   },
   "devDependencies": {
     "@types/node": "^18.11.11",
