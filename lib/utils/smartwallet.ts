@@ -3,8 +3,8 @@ import { SmartWallet } from "@thirdweb-dev/wallets";
 import {
   FACTORY_ADDRESS_GOERLI,
   ACTIVE_CHAIN,
-  ACCESS_PASS_ADDRESS_GOERLI,
-  IMPLEMENTATION_ADDRESS_GOERLI,
+  ACCESS_PASS_ADDRESS_MUMBAI,
+  IMPLEMENTATION_ADDRESS_MUMBAI,
 } from "../constants";
 import { SmartContract, NFT } from "@thirdweb-dev/sdk";
 import { WalletOptions } from "@thirdweb-dev/wallets";
@@ -25,9 +25,9 @@ export function newSmartWallet(token: NFT) {
         owner: string
       ) => {
         const account = factory.prepare("createAccount", [
-          IMPLEMENTATION_ADDRESS_GOERLI,
+          IMPLEMENTATION_ADDRESS_MUMBAI,
           ACTIVE_CHAIN.chainId,
-          ACCESS_PASS_ADDRESS_GOERLI,
+          ACCESS_PASS_ADDRESS_MUMBAI,
           token.metadata.id,
           0,
           ethers.utils.toUtf8Bytes(""),
@@ -41,9 +41,9 @@ export function newSmartWallet(token: NFT) {
         owner: string
       ) => {
         return factory.call("account", [
-          IMPLEMENTATION_ADDRESS_GOERLI,
+          IMPLEMENTATION_ADDRESS_MUMBAI,
           ACTIVE_CHAIN.chainId,
-          ACCESS_PASS_ADDRESS_GOERLI,
+          ACCESS_PASS_ADDRESS_MUMBAI,
           token.metadata.id,
           0,
         ]);

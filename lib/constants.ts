@@ -1,4 +1,4 @@
-import { Polygon } from "@thirdweb-dev/chains";
+import { Polygon, Mumbai } from "@thirdweb-dev/chains";
 import { type TBAccountParams } from "@tokenbound/sdk/dist/src/TokenboundClient";
 
 export const DEFAULT_ACCOUNT: TBAccountParams = {
@@ -14,6 +14,8 @@ export const ACCESS_PASS_ADDRESS_GOERLI =
   "0x321940edED4AF0Cc35a593cb9c1675Fd63c7A7cf";
 export const ACCESS_PASS_ADDRESS_POLYGON =
   "0xe09d8fC773B45Dbd71f7d1744e5E4De0a24Ab509";
+export const ACCESS_PASS_ADDRESS_MUMBAI =
+  "0x0C7c86c7BD1208c685Cb5428f9C0059dD497B3A7";
 
 export const ACTIVE_CHAIN = Polygon;
 
@@ -24,4 +26,7 @@ export const IMPLEMENTATION_ADDRESS_GOERLI =
   "0xd5c3EAA2fA812c3a45a773d4962557765B6E0ecD";
 
 export const IMPLEMENTATION_ADDRESS_POLYGON =
+  "0x2d25602551487c3f3354dd80d76d54383a243358";
+
+export const IMPLEMENTATION_ADDRESS_MUMBAI =
   "0x2d25602551487c3f3354dd80d76d54383a243358";

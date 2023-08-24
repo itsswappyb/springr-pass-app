@@ -3,10 +3,12 @@ import {
   NFT,
   useAddress,
   useNFT,
+  useOwnedNFTs,
   useNFTBalance,
   useContract,
   useWallet,
   Web3Button,
+  useSigner,
 } from "@thirdweb-dev/react";
 
 import Image from "next/image";
@@ -15,6 +17,7 @@ import { Bricolage_Grotesque } from "next/font/google";
 import accessPassImg from "@/public/images/access-pass.png";
 import {
   ACCESS_PASS_ADDRESS_POLYGON,
+  ACCESS_PASS_ADDRESS_MUMBAI,
   IMPLEMENTATION_ADDRESS_POLYGON,
 } from "@/lib/constants";
 import { Signer } from "ethers";
@@ -30,38 +33,25 @@ const Home: NextPage = () => {
   const [smartWalletAddress, setSmartWalletAddress] = useState<string | null>(
     null
   );
-  const [signer, setSigner] = useState<Signer>();
+  // const [signer, setSigner] = useState<Signer>();
+  const signer = useSigner();
 
   // get the currently connected wallet
   const address = useAddress();
   const wallet = useWallet();
 
-  const { contract } = useContract(ACCESS_PASS_ADDRESS_POLYGON);
-  const { data: nft, isLoading, error } = useNFT(contract, 0);
+  const { contract } = useContract(ACCESS_PASS_ADDRESS_MUMBAI);
 
   const {
-    data: nftBalance,
-    isLoading: loadingNftBalance,
-    error: nftBalanceError,
-  } = useNFTBalance(contract, address, 0);
-  console.log("nft balance:", nftBalance?.toNumber());
+    data: ownedNfts,
+    isLoading: isLoadingOwnedNfts,
+    error: ownedNftsError,
+  } = useOwnedNFTs(contract, address);
+  console.log("owned nfts:", ownedNfts);
 
-  const createSmartWallet = async (nft: NFT) => {
-    if (nft && smartWalletAddress == null && address && wallet) {
-      const smartWallet = newSmartWallet(nft);
-      console.log("personal wallet", address);
-      await smartWallet.connect({
-        personalWallet: wallet,
-      });
-      setSigner(await smartWallet.getSigner());
-      console.log("signer", signer);
-      setSmartWalletAddress(await smartWallet.getAddress());
-      console.log("smart wallet address", await smartWallet.getAddress());
-      return smartWallet;
-    } else {
-      console.log("smart wallet not created");
-    }
-  };
+  const tokenId = ownedNfts?.[0]?.metadata.id || "";
+
+  const { data: nft, isLoading, error } = useNFT(contract, tokenId);
 
   const tokenboundClient = new TokenboundClient({
     signer,
@@ -69,12 +59,41 @@ const Home: NextPage = () => {
     implementationAddress: IMPLEMENTATION_ADDRESS_POLYGON as `0x${string}`,
   });
 
-  const tokenboundAccount = tokenboundClient.getAccount({
-    tokenContract: ACCESS_PASS_ADDRESS_POLYGON,
-    tokenId: "0",
-  });
+  const createSmartWallet = async (nft: NFT) => {
+    if (nft && smartWalletAddress == null && address && wallet) {
+      // const smartWallet = newSmartWallet(nft);
+      const tokenboundAccount = await tokenboundClient.createAccount({
+        tokenContract: ACCESS_PASS_ADDRESS_POLYGON,
+        tokenId: tokenId,
+      });
 
-  console.log("tokenboundAccount: ", tokenboundAccount);
+      console.log("personal wallet", address);
+      console.log("created tba:", tokenboundAccount);
+      // await smartWallet.connect({
+      //   personalWallet: wallet,
+      // });
+      // setSigner(await smartWallet.getSigner());
+      // console.log("signer", signer);
+      // setSmartWalletAddress(await smartWallet.getAddress());
+      // console.log("smart wallet address", await smartWallet.getAddress());
+      // return smartWallet;
+      return tokenboundAccount;
+    } else {
+      console.log("smart wallet not created");
+    }
+  };
+
+  function getTokenboundAccount(): string {
+    let tokenboundAccount = "";
+    if (tokenId) {
+      tokenboundAccount = tokenboundClient.getAccount({
+        tokenContract: ACCESS_PASS_ADDRESS_POLYGON,
+        tokenId: tokenId,
+      });
+    }
+
+    return tokenboundAccount;
+  }
 
   return (
     <main
@@ -92,7 +111,7 @@ const Home: NextPage = () => {
         <Image src={accessPassImg} alt="Access Pass" className="max-w-xl" />
       </div>
       <div>
-        {address && nft && nftBalance && nftBalance?.toNumber() < 1 ? (
+        {address && ownedNfts && nft ? (
           <Web3Button
             className="px-6 py-3 rounded-lg bg-bluePrimary text-white hover:bg-blue-500 transition-colors duration-500 animate-in fade-in-10"
             contractAddress={ACCESS_PASS_ADDRESS_POLYGON}
@@ -136,9 +155,9 @@ const Home: NextPage = () => {
             </h3>
           </>
         )}
-        {tokenboundAccount && (
+        {tokenId && (
           <p className="font-bold text-md text-white my-6">
-            Tokenbound Account: {tokenboundAccount}
+            Tokenbound Account: {getTokenboundAccount()}
           </p>
         )}
       </div>
