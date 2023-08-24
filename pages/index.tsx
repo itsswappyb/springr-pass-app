@@ -99,16 +99,22 @@ const Home: NextPage = () => {
     <main
       className={`flex min-h-screen flex-col justify-center items-center ${bricolage.className}`}
     >
-      <h1 className="text-6xl font-bold my-6 animate-in fade-in-5 duration-1000">
+      <h1 className="text-3xl lg:text-6xl font-bold my-6 animate-in fade-in-5 duration-1000">
         Springr Beta Access Pass
       </h1>
-      <p className="mb-12 animate-in fade-in-5 duration-1000">
+      <p className="mb-12 animate-in fade-in-5 duration-1000 text-center px-12">
         Congratulations on being one of the few special people to get early
         access membership to Springr.
       </p>
 
-      <div className="flex justify-center items-center h-full animate-in spin-in duration-700 transition-all ease-in delay-300 opacity-100 zoom-in-50">
-        <Image src={accessPassImg} alt="Access Pass" className="max-w-xl" />
+      <div className="px-12 flex justify-center items-center h-full animate-in spin-in duration-700 transition-all ease-in delay-300 opacity-100 zoom-in-50">
+        <Image
+          src={accessPassImg}
+          alt="Access Pass"
+          className="w-full max-w-lg md:w-screen md:max-w-xl"
+          priority
+          quality={85}
+        />
       </div>
       <div>
         {address && ownedNfts && nft ? (
