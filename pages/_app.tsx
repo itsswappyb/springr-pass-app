@@ -11,7 +11,7 @@ const clientId: string = process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID || "";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThirdwebProvider clientId={clientId} activeChain={"goerli"}>
+    <ThirdwebProvider clientId={clientId} activeChain={ACTIVE_CHAIN}>
       <Component {...pageProps} />
     </ThirdwebProvider>
   );
