@@ -40,7 +40,7 @@ const Home: NextPage = () => {
   const address = useAddress();
   const wallet = useWallet();
 
-  const { contract } = useContract(ACCESS_PASS_ADDRESS_MUMBAI);
+  const { contract } = useContract(ACCESS_PASS_ADDRESS_POLYGON);
 
   const {
     data: ownedNfts,
@@ -117,7 +117,7 @@ const Home: NextPage = () => {
         />
       </div>
       <div>
-        {address && ownedNfts && nft ? (
+        {address && ownedNfts && nft && ownedNfts.length < 1 ? (
           <Web3Button
             className="px-6 py-3 rounded-lg bg-bluePrimary text-white hover:bg-blue-500 transition-colors duration-500 animate-in fade-in-10"
             contractAddress={ACCESS_PASS_ADDRESS_POLYGON}
