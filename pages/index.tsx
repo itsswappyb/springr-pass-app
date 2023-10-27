@@ -26,6 +26,7 @@ import { useState } from "react";
 import { newSmartWallet } from "@/lib/utils/smartwallet";
 import { TokenboundClient } from "@tokenbound/sdk";
 import { ACTIVE_CHAIN } from "@/lib/constants";
+import EarlyAccessBanner from "@/components/early-access-banner";
 
 const bricolage = Bricolage_Grotesque({ subsets: ["latin"] });
 
@@ -99,13 +100,14 @@ const Home: NextPage = () => {
     <main
       className={`flex min-h-screen flex-col justify-center items-center ${bricolage.className}`}
     >
+      <EarlyAccessBanner />
       <h1 className="text-3xl lg:text-6xl font-bold my-6 animate-in fade-in-5 duration-1000">
         Springr Beta Access Pass
       </h1>
-      <p className="mb-12 animate-in fade-in-5 duration-1000 text-center px-12">
-        Congratulations on being one of the few special people to get early
-        access membership to Springr.
-      </p>
+      {/* <p className="mb-12 animate-in fade-in-5 duration-1000 px-12 text-lg max-w-lg text-justify">
+        Congratulations on getting early access membership to Springr -
+        co-living spaces for creators and crypto nomads.
+      </p> */}
 
       <div className="px-12 flex justify-center items-center h-full animate-in spin-in duration-700 transition-all ease-in delay-300 opacity-100 zoom-in-50">
         <Image
@@ -150,7 +152,23 @@ const Home: NextPage = () => {
             Claim Pass
           </Web3Button>
         ) : (
-          <ConnectWallet className="bg-bluePrimary text-white hover:bg-blue-500 transition-colors duration-500 animate-in fade-in-10" />
+          <ConnectWallet
+            className="bg-bluePrimary text-white hover:bg-blue-500 transition-colors duration-500 animate-in fade-in-10"
+            theme="light"
+            modalTitle="Connect"
+            modalTitleIconUrl="/images/springr-spring-icon-orange.png"
+            switchToActiveChain
+            welcomeScreen={{
+              title:
+                "Welcome to Springr - co-live with creators and crypto friends",
+              subtitle: "Connect a wallet to claim your pass!",
+              img: {
+                src: "https://www.springr.xyz/_next/static/media/springr-logo.ecfa7aa3.svg",
+                width: 300,
+                height: 150,
+              },
+            }}
+          />
         )}
       </div>
       <div>

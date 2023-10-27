@@ -1,5 +1,15 @@
 import type { AppProps } from "next/app";
-import { ThirdwebProvider } from "@thirdweb-dev/react";
+import {
+  ThirdwebProvider,
+  metamaskWallet,
+  coinbaseWallet,
+  walletConnect,
+  trustWallet,
+  zerionWallet,
+  rainbowWallet,
+  phantomWallet,
+  embeddedWallet,
+} from "@thirdweb-dev/react";
 import "@/styles/globals.scss";
 import { ACTIVE_CHAIN } from "@/lib/constants";
 
@@ -11,7 +21,20 @@ const clientId: string = process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID || "";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThirdwebProvider clientId={clientId} activeChain={ACTIVE_CHAIN}>
+    <ThirdwebProvider
+      clientId={clientId}
+      activeChain={ACTIVE_CHAIN}
+      supportedWallets={[
+        // @ts-ignore
+        metamaskWallet({ recommended: true }),
+        coinbaseWallet(),
+        walletConnect(),
+        trustWallet(),
+        rainbowWallet(),
+        embeddedWallet(),
+        zerionWallet(),
+      ]}
+    >
       <Component {...pageProps} />
     </ThirdwebProvider>
   );
